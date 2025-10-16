@@ -35,3 +35,7 @@
   color: #1173d4;
   text-decoration: none;
 }
+.spformContainer {
+  width: 45%;
+  margin: 4rem auto;
+}

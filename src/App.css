@@ -1,0 +1,37 @@
+.loginContainer {
+  height: 100vh;
+  display: flex;
+}
+.left {
+  width: 50%;
+  height: 100%;
+  background-color: #1173d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.leftContent {
+  text-align: center;
+  color: white;
+}
+.right {
+  width: 50%;
+  height: 100%;
+}
+.rightContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 1.2rem;
+  padding-inline: 25%;
+}
+
+.rightContent p {
+  color: gray;
+}
+.link {
+  color: #1173d4;
+  text-decoration: none;
+}

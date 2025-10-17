@@ -1,10 +1,41 @@
 import { Button, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: { email: "", password: "" },
+    mode: "onBlur",
+  });
+
+  const onSubmit = async (data) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/user/login`,
+        data
+      );
+      toast.success(res?.data?.message || "Logged in successfully");
+      reset();
+    } catch (error) {
+      const message = error?.response?.data?.message || "Login failed";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
-    <div className="loginContainer">
+    <div className="authContainer">
       <div className="left">
         <div className="leftContent">
           <Typography variant="h3" component="h3">
@@ -25,24 +56,46 @@ const Login = () => {
           <Typography variant="p" component="p">
             Enter your credentials to access your account
           </Typography>
-          <TextField
-            id="outlined-basic"
-            label="Email"
-            variant="outlined"
-            fullWidth
-          />
-          <TextField
-            id="outlined-basic"
-            label="Password"
-            variant="outlined"
-            fullWidth
-          />
-          <Button variant="contained" fullWidth>
-            Submit
-          </Button>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              id="email"
+              label="Email"
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{ mb: 2 }}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address",
+                },
+              })}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{ mb: 2 }}
+              {...register("password", {
+                required: "Password is required",
+                minLength: { value: 6, message: "Minimum 6 characters" },
+              })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+            <Button type="submit" variant="contained" fullWidth>
+              {loading ? "Loading..." : "Submit"}
+            </Button>
+          </form>
           <Typography variant="p" component="p" className="">
             Don't have an account?{" "}
-            <Link href="/signup" className="link">
+            <Link to="/signup" className="link">
               Create Account
             </Link>
           </Typography>

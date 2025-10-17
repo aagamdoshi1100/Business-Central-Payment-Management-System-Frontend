@@ -3,6 +3,8 @@ import "./App.css";
 import Login from "./Components/Login";
 import SPForm from "./Components/SPForm";
 import CasePaymentManagement from "./Components/CasePaymentManagement";
+import SignUp from "./Components/SignUp";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -15,8 +17,10 @@ function App() {
             path="/cash-payment-management"
             element={<CasePaymentManagement />}
           />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </BrowserRouter>
+      <ToastContainer />
     </>
   );
 }

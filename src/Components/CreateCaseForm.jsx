@@ -8,19 +8,27 @@ import {
   Typography,
   MenuItem,
 } from "@mui/material";
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm, Controller, Watch } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+import useFetch from "../hooks/useFetch";
 
 const CreateCaseForm = ({ setFormEnabled }) => {
+  const {
+    loading: loadSP,
+    err: errSP,
+    data: serviceProviders,
+  } = useFetch("/service-provider", "get");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
 
   const {
     control,
     handleSubmit,
+    setError,
     formState: { errors },
+    watch,
     reset,
   } = useForm({
     defaultValues: {
@@ -32,6 +40,35 @@ const CreateCaseForm = ({ setFormEnabled }) => {
     },
     mode: "onBlur",
   });
+  const workReference = watch("workReferenceId");
+  useEffect(() => {
+    let timeOutId;
+    setErr("");
+    timeOutId = setTimeout(async () => {
+      if (workReference?.length > 5) {
+        const res = await axios.post(
+          `${import.meta.env.VITE_API_URL}/cases/validateWorkId`,
+          { workReference },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!res?.data?.success) {
+          setError("workReferenceId", {
+            type: "server",
+            message: res?.data?.message,
+          });
+          setErr(res?.data?.message);
+        }
+      }
+    }, 2000);
+
+    return () => {
+      clearTimeout(timeOutId);
+    };
+  }, [workReference]);
 
   const onSubmit = async (formData) => {
     if (loading) return;
@@ -48,8 +85,6 @@ const CreateCaseForm = ({ setFormEnabled }) => {
         amount: parseFloat(formData.amount),
       };
 
-      console.log("Sending data:", transformedData);
-
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/cases`,
         transformedData,
@@ -60,7 +95,6 @@ const CreateCaseForm = ({ setFormEnabled }) => {
         }
       );
 
-      console.log("Success response:", res.data);
       toast.success(res?.data?.message || "Case created successfully");
       reset(); // Reset form after successful submission
     } catch (error) {
@@ -114,22 +148,28 @@ const CreateCaseForm = ({ setFormEnabled }) => {
                   control={control}
                   rules={{
                     required: "Service Provider Name is required",
-                    minLength: {
-                      value: 3,
-                      message:
-                        "Service Provider Name must be at least 3 characters",
-                    },
                   }}
                   render={({ field }) => (
                     <TextField
                       {...field}
+                      select
                       label="Service Provider Name *"
                       variant="outlined"
                       size="small"
                       fullWidth
                       error={!!errors.serviceProviderName}
                       helperText={errors.serviceProviderName?.message}
-                    />
+                    >
+                      {serviceProviders?.data?.length > 0 ? (
+                        serviceProviders.data.map((provider) => (
+                          <MenuItem key={provider._id} value={provider._id}>
+                            {provider.name}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem disabled>No providers found</MenuItem>
+                      )}
+                    </TextField>
                   )}
                 />
               </Grid>
@@ -256,7 +296,7 @@ const CreateCaseForm = ({ setFormEnabled }) => {
                 variant="contained"
                 size="medium"
                 type="submit"
-                disabled={loading}
+                disabled={loading || err !== ""}
               >
                 {loading ? "Creating..." : "Create Case"}
               </Button>

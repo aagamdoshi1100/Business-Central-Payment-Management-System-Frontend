@@ -22,11 +22,8 @@ const DataTable = ({ columns, rows, title }) => {
   };
   useEffect(() => {}, [columns, rows, title]);
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      {title ? (
-        <div style={{ padding: "12px 16px", fontWeight: 600 }}>{title}</div>
-      ) : null}
-      <TableContainer sx={{ maxHeight: 440 }}>
+    <>
+      <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -53,7 +50,6 @@ const DataTable = ({ columns, rows, title }) => {
                 >
                   {columns.map((column) => {
                     const value = row[column.id];
-                    console.log(value, "val");
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === "number"
@@ -76,7 +72,7 @@ const DataTable = ({ columns, rows, title }) => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </Paper>
+    </>
   );
 };
 

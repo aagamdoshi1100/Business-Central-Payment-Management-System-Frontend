@@ -5,15 +5,12 @@ import SPForm from "./Components/SPForm";
 import CasePaymentManagement from "./Components/CasePaymentManagement";
 import SignUp from "./Components/SignUp";
 import { ToastContainer } from "react-toastify";
-import { useState } from "react";
-import CreateCaseForm from "./Components/CreateCaseForm";
 import UserPermissions from "./Components/UserPermissions";
 import Sidebar from "./Components/Sidebar";
 import Dashboard from "./Components/Dashboard";
 import Reports from "./Components/Reports";
 
 function App() {
-  const [isFormEnabled, setFormEnabled] = useState(true);
   return (
     <>
       <BrowserRouter>
@@ -31,10 +28,6 @@ function App() {
           <Route path="/reports" element={<Reports />} />
         </Routes>
       </BrowserRouter>
-      {/* {isFormEnabled && <CreateCaseForm />}
-      <div className="floatBtn" onClick={() => setFormEnabled(!isFormEnabled)}>
-        Create Case
-      </div> */}
 
       <ToastContainer />
     </>

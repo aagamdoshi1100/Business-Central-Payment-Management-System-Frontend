@@ -4,28 +4,28 @@ export const columns = [
   {
     id: "AssignedTo",
     label: "Assigned To",
-    minWidth: 170,
+    minWidth: 120,
   },
   {
     id: "Amount",
     label: "Amount",
-    minWidth: 170,
+    minWidth: 120,
   },
   {
     id: "DueDate",
     label: "Due Date",
-    minWidth: 170,
+    minWidth: 120,
   },
   ,
   {
     id: "Status",
     label: "Status",
-    minWidth: 170,
+    minWidth: 120,
   },
   {
     id: "Notes",
     label: "Notes",
-    minWidth: 170,
+    minWidth: 120,
   },
 ];
 

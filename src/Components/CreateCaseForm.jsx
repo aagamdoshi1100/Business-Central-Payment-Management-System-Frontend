@@ -13,7 +13,7 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const CreateCaseForm = () => {
+const CreateCaseForm = ({ setFormEnabled }) => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
 
@@ -81,23 +81,28 @@ const CreateCaseForm = () => {
   };
 
   return (
-    <form className="createCaseForm" onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={1} sx={{ mb: 3 }}>
-        <Typography variant="h4" component="h4" sx={{ fontWeight: "Bold" }}>
-          Create New Case
-        </Typography>
-
-        <Typography variant="p" component="p" sx={{ color: "gray" }}>
-          Please fill in the details to create a new case.
-        </Typography>
-      </Stack>
-
-      <Stack spacing={2}>
+    <div className="caseOverlay" onClick={() => setFormEnabled(false)}>
+      <form
+        className="createCaseForm"
+        onSubmit={handleSubmit(onSubmit)}
+        onClick={(e) => e.stopPropagation()}
+      >
         <Card>
           <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Case Details
-            </Typography>
+            <Stack spacing={1} sx={{ mb: 3 }}>
+              <Typography
+                variant="h4"
+                component="h4"
+                sx={{ fontWeight: "Bold" }}
+              >
+                Create New Case
+              </Typography>
+
+              <Typography variant="p" component="p" sx={{ color: "gray" }}>
+                Please fill in the details to create a new case.
+              </Typography>
+            </Stack>
+
             <Grid
               container
               rowSpacing={2}
@@ -245,21 +250,21 @@ const CreateCaseForm = () => {
                 />
               </Grid>
             </Grid>
+
+            <Stack direction={"row"} justifyContent={"flex-end"} sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                size="medium"
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? "Creating..." : "Create Case"}
+              </Button>
+            </Stack>
           </CardContent>
         </Card>
-      </Stack>
-
-      <Stack direction={"row"} justifyContent={"flex-end"} sx={{ mt: 2 }}>
-        <Button
-          variant="contained"
-          size="medium"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Creating..." : "Create Case"}
-        </Button>
-      </Stack>
-    </form>
+      </form>
+    </div>
   );
 };
 

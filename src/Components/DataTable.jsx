@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,7 +20,7 @@ const DataTable = ({ columns, rows, title }) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
+  useEffect(() => {}, [columns, rows, title]);
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       {title ? (
@@ -45,9 +45,15 @@ const DataTable = ({ columns, rows, title }) => {
             {rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, rowIndex) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id ?? rowIndex}>
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.id ?? rowIndex}
+                >
                   {columns.map((column) => {
                     const value = row[column.id];
+                    console.log(value, "val");
                     return (
                       <TableCell key={column.id} align={column.align}>
                         {column.format && typeof value === "number"
@@ -75,5 +81,3 @@ const DataTable = ({ columns, rows, title }) => {
 };
 
 export default DataTable;
-
-

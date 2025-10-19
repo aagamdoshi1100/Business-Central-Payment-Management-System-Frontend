@@ -1,3 +1,13 @@
+.floatBtn {
+  position: absolute;
+  bottom: 100px;
+  right: 100px;
+  padding: 5px;
+  background-color: #1173d4;
+  color: white;
+}
+
+/* -------- Login  -------- */
 .authContainer {
   height: 100vh;
   display: flex;
@@ -31,11 +41,63 @@
 .rightContent p {
   color: gray;
 }
-.link {
-  color: #1173d4;
-  text-decoration: none;
+
+/* -------- Login end  -------- */
+/* -------- sidebar  -------- */
+.sideContainer {
+  width: 15%;
+  height: calc(100vh - 50px);
+  border-right: 1px solid rgb(219, 218, 218);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 2rem;
+  padding-inline: 1rem;
 }
-.spformContainer {
-  width: 45%;
-  margin: 4rem auto;
+.bgPadding {
+  width: calc(15% + 32px);
+}
+.sideItem {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 0.2rem;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: gray;
+  transition: all 0.15s ease;
+}
+.sideItem svg {
+  color: inherit;
+  transition: all 0.15s ease;
+}
+.sideItem:hover {
+  background-color: #3498db;
+  color: #e3f2fd;
+}
+.sideItem.active,
+.sideItem-logout {
+  background-color: #3498db;
+  color: #e3f2fd;
+}
+.sideTitle {
+  padding: 1.2rem;
+  padding-top: 0;
+  font-weight: 900 !important;
+}
+
+/* -------- sidebar end  -------- */
+
+.container {
+  display: flex;
+}
+.rightSidePage {
+  width: 80%;
+  padding: 1rem 4rem;
+  margin: 1rem auto;
 }

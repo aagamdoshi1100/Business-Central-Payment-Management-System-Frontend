@@ -1,4 +1,15 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+body {
+  background: #fafafa;
+}
+.link {
+  color: #1173d4;
+  text-decoration: none;
+}
+.logo {
+  margin-bottom: 1rem;
 }

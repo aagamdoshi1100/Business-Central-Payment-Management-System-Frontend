@@ -9,13 +9,16 @@ import "@fontsource/roboto/700.css";
 import { CasePaymentContextProvider } from "./context/CasePaymentContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { UserPermissionProvider } from "./context/UserPermissionContext.jsx";
+import { DashboardContextProvider } from "./context/DashboardContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <UserPermissionProvider>
         <CasePaymentContextProvider>
-          <App />
+          <DashboardContextProvider>
+            <App />
+          </DashboardContextProvider>
         </CasePaymentContextProvider>
       </UserPermissionProvider>
     </AuthProvider>

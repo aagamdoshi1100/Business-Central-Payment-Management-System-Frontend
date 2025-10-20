@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,8 +6,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { MenuItem, TextField } from "@mui/material";
 
-const DataTable = ({ columns, rows, title }) => {
+const DataTable = ({ columns, rows, title, additionalData }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -30,7 +30,6 @@ const DataTable = ({ columns, rows, title }) => {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
@@ -51,13 +50,68 @@ const DataTable = ({ columns, rows, title }) => {
                   >
                     {columns.map((column) => {
                       const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
+                      if (column.id === "assignedTo") {
+                        console.log(column.id, value, "alue?.name");
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            <TextField
+                              select
+                              sx={{ minWidth: 140 }}
+                              size="small"
+                              label="Select Agent"
+                              defaultValue={value?._id ?? ""}
+                              onChange={(e) =>
+                                additionalData.handleAgentChange(
+                                  e,
+                                  row["caseNumber"]
+                                )
+                              }
+                            >
+                              {additionalData?.agents?.length > 0 ? (
+                                additionalData?.agents?.map((ag) => (
+                                  <MenuItem key={ag._id} value={ag._id}>
+                                    {ag.name}
+                                  </MenuItem>
+                                ))
+                              ) : (
+                                <MenuItem disabled>
+                                  No agents available
+                                </MenuItem>
+                              )}
+                            </TextField>
+                          </TableCell>
+                        );
+                      }
+
+                      if (column.id === "dueDate") {
+                        return (
+                          <TableCell key={column.id}>
+                            {value?.split("T")?.[0]}
+                          </TableCell>
+                        );
+                      }
+
+                      if (column.id === "status") {
+                        return (
+                          <TableCell
+                            key={column.id}
+                            sx={{
+                              color:
+                                value === "In progress" ? "green" : "#1976d2",
+                            }}
+                          >
+                            {value?.split("T")?.[0]}
+                          </TableCell>
+                        );
+                      }
+
+                      if (column.id === "serviceProvider") {
+                        return (
+                          <TableCell key={column.id}>{value?.name}</TableCell>
+                        );
+                      }
+
+                      return <TableCell key={column.id}>{value}</TableCell>;
                     })}
                   </TableRow>
                 ))

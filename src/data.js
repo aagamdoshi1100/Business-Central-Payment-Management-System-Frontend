@@ -1,30 +1,31 @@
 export const columns = [
-  { id: "CaseId", label: "Case Id", minWidth: 170 },
-  { id: "Vendor", label: "Vendor", minWidth: 100 },
+  { id: "caseNumber", label: "Case Id", minWidth: 120 },
+  { id: "serviceProvider", label: "Service Provider", minWidth: 120 },
+  { id: "workReferenceId", label: "Work Id", minWidth: 100 },
   {
-    id: "AssignedTo",
+    id: "assignedTo",
     label: "Assigned To",
     minWidth: 120,
   },
   {
-    id: "Amount",
+    id: "amount",
     label: "Amount",
-    minWidth: 120,
+    minWidth: 60,
   },
   {
-    id: "DueDate",
+    id: "dueDate",
     label: "Due Date",
-    minWidth: 120,
+    minWidth: 80,
   },
   ,
   {
-    id: "Status",
+    id: "status",
     label: "Status",
-    minWidth: 120,
+    minWidth: 60,
   },
   {
-    id: "Notes",
-    label: "Notes",
+    id: "description",
+    label: "Description",
     minWidth: 120,
   },
 ];

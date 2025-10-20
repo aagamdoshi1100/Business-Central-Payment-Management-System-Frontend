@@ -32,7 +32,7 @@ const CreateCaseForm = ({ setFormEnabled }) => {
     reset,
   } = useForm({
     defaultValues: {
-      serviceProviderName: "",
+      serviceProvider: "",
       workReferenceId: "",
       description: "",
       dueDate: "",
@@ -78,7 +78,7 @@ const CreateCaseForm = ({ setFormEnabled }) => {
     try {
       // Transform form data to match backend schema
       const transformedData = {
-        serviceProviderName: formData.serviceProviderName,
+        serviceProvider: formData.serviceProvider,
         workReferenceId: formData.workReferenceId,
         description: formData.description,
         dueDate: formData.dueDate,
@@ -144,7 +144,7 @@ const CreateCaseForm = ({ setFormEnabled }) => {
             >
               <Grid size={6}>
                 <Controller
-                  name="serviceProviderName"
+                  name="serviceProvider"
                   control={control}
                   rules={{
                     required: "Service Provider Name is required",
@@ -157,8 +157,8 @@ const CreateCaseForm = ({ setFormEnabled }) => {
                       variant="outlined"
                       size="small"
                       fullWidth
-                      error={!!errors.serviceProviderName}
-                      helperText={errors.serviceProviderName?.message}
+                      error={!!errors.serviceProvider}
+                      helperText={errors.serviceProvider?.message}
                     >
                       {serviceProviders?.data?.length > 0 ? (
                         serviceProviders.data.map((provider) => (

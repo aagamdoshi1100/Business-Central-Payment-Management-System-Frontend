@@ -30,7 +30,7 @@ const SPForm = () => {
       pan: "AUAPD2222B",
       gstin: "22ABCDE1234F1Z5",
       email: "your.emailfakedata15225@gmail.com",
-      bankName: "203-579-0542",
+      bankName: "SBI",
       ifscCode: "SBIN0001234",
       accountNumber: "8169975445",
       confirmAccountNumber: "8169975445",

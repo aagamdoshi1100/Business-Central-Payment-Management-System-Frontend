@@ -25,22 +25,22 @@ const SPForm = () => {
     reset,
   } = useForm({
     defaultValues: {
-      name: "Ashlee",
-      mobile: "8169975445",
-      pan: "AUAPD2222B",
-      gstin: "22ABCDE1234F1Z5",
-      email: "your.emailfakedata15225@gmail.com",
-      bankName: "SBI",
-      ifscCode: "SBIN0001234",
-      accountNumber: "8169975445",
-      confirmAccountNumber: "8169975445",
-      slaType: "Time Based",
-      penaltyType: "Percentage",
-      penaltyValue: "1",
-      incentiveType: "Fixed",
-      incentiveValue: "1",
-      tdsApplicable: true,
-      tdsPercentage: "1",
+      name: "",
+      mobile: "",
+      pan: "",
+      gstin: "",
+      email: "",
+      bankName: "",
+      ifscCode: "",
+      accountNumber: "",
+      confirmAccountNumber: "",
+      slaType: "",
+      penaltyType: "",
+      penaltyValue: "",
+      incentiveType: "",
+      incentiveValue: "",
+      tdsApplicable: false,
+      tdsPercentage: "",
     },
     mode: "onBlur",
   });
@@ -89,18 +89,11 @@ const SPForm = () => {
       );
 
       toast.success(res?.data?.message || "Logged in successfully");
-      // reset(); // Reset form after successful submission
+      reset(); // Reset form after successful submission
     } catch (error) {
       console.error("Error:", error);
       if (error.response) {
-        // Server responded with error status
         setErr(error.response.data.message || "Server error occurred");
-      } else if (error.request) {
-        // Request was made but no response received
-        setErr("Network error - please check your connection");
-      } else {
-        // Something else happened
-        setErr("An unexpected error occurred");
       }
     } finally {
       setLoading(false);

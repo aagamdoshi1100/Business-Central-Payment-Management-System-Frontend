@@ -12,11 +12,12 @@ import { useEffect, useState } from "react";
 import { useForm, Controller, Watch } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useCP } from "../context/CasePaymentContext";
 
 const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
-
+  const { setCasesDetails } = useCP();
   const {
     control,
     handleSubmit,
@@ -42,7 +43,7 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
       if (workReference?.length > 5) {
         const res = await axios.post(
           `${import.meta.env.VITE_API_URL}/cases/validateWorkId`,
-          { workReference },
+          { workReference: workReference.trim() },
           {
             headers: {
               "Content-Type": "application/json",
@@ -90,18 +91,13 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
       );
 
       toast.success(res?.data?.message || "Case created successfully");
-      reset(); // Reset form after successful submission
+      setCasesDetails((prev) => [res?.data?.newCase, ...prev]);
+      reset();
     } catch (error) {
       console.error("Error:", error);
       if (error.response) {
         setErr(error.response.data.message || "Server error occurred");
         toast.error(error.response.data.message || "Server error occurred");
-      } else if (error.request) {
-        setErr("Network error - please check your connection");
-        toast.error("Network error - please check your connection");
-      } else {
-        setErr("An unexpected error occurred");
-        toast.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);

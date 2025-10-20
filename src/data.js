@@ -29,3 +29,31 @@ export const columns = [
     minWidth: 120,
   },
 ];
+
+export const userPermissionColums = [
+  {
+    id: "name",
+    label: "Name",
+    minWidth: 120,
+  },
+  {
+    id: "email",
+    label: "Email",
+    minWidth: 180,
+  },
+  {
+    id: "accessType",
+    label: "Access Type",
+    minWidth: 100,
+  },
+  {
+    id: "accessEnabled",
+    label: "Access Enabled",
+    minWidth: 100,
+  },
+  {
+    id: "createdAt",
+    label: "Created At",
+    minWidth: 120,
+  },
+];

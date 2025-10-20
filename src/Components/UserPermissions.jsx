@@ -3,19 +3,19 @@ import React, { useEffect, useState } from "react";
 import DataTable from "./DataTable";
 import useFetch from "../hooks/useFetch";
 import Sidebar from "./Sidebar";
+import { userPermissionColums } from "../data";
+import { usePermission } from "../context/UserPermissionContext";
 
 const UserPermissions = () => {
   const { data, loading, error } = useFetch("/user", "GET");
+  const { updateUserPermission, users, setUsers } = usePermission();
 
-  const keys = data?.users
-    ? Object.keys(data?.users?.[0])?.filter(
-        (key) => !["_id", "__v"]?.includes(key)
-      )
-    : [];
-  const columns = keys.map((key) => ({ id: key, label: key, minWidth: 100 }));
-  const rows = data?.users ? data?.users : [];
+  useEffect(() => {
+    if (data?.users) {
+      setUsers(data.users);
+    }
+  }, [data]);
 
-  console.log(columns, rows);
   return (
     <div className="container">
       <Sidebar />
@@ -26,7 +26,12 @@ const UserPermissions = () => {
         <Typography variant="subtitle1" component={"p"}>
           Manage roles and their access permissions within the system.
         </Typography>
-        <DataTable columns={columns} rows={rows} title={"Users"} />
+        <DataTable
+          columns={userPermissionColums}
+          rows={users}
+          title={"Users"}
+          additionalData={{ updateUserPermission }}
+        />
       </Stack>
     </div>
   );

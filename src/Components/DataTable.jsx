@@ -7,8 +7,10 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { MenuItem, TextField } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 const DataTable = ({ columns, rows, title, additionalData }) => {
+  const location = useLocation();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -47,11 +49,18 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                     role="checkbox"
                     tabIndex={-1}
                     key={row.id ?? rowIndex}
-                    onClick={() =>
-                      additionalData.setIsFinalFormEnabled({
-                        flag: true,
-                        data: row,
-                      })
+                    onClick={
+                      location.pathname === "/roles-and-permissions"
+                        ? () =>
+                            additionalData?.updateUserPermission(
+                              row?._id,
+                              row?.accessEnabled
+                            )
+                        : () =>
+                            additionalData?.setIsFinalFormEnabled({
+                              flag: true,
+                              data: row,
+                            })
                     }
                   >
                     {columns.map((column) => {
@@ -88,10 +97,25 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                         );
                       }
 
-                      if (column.id === "dueDate") {
+                      if (
+                        column.id === "dueDate" ||
+                        column.id === "createdAt"
+                      ) {
                         return (
                           <TableCell key={column.id}>
                             {value?.split("T")?.[0]}
+                          </TableCell>
+                        );
+                      }
+
+                      if (column.id === "accessEnabled") {
+                        return (
+                          <TableCell key={column.id}>
+                            {value ? (
+                              <p style={{ color: "red" }}>Disable Account</p>
+                            ) : (
+                              <p style={{ color: "green" }}>Enable Account</p>
+                            )}
                           </TableCell>
                         );
                       }

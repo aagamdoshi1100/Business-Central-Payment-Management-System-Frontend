@@ -37,7 +37,7 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody sx={{ cursor: "pointer" }}>
             {rows.length > 0 ? (
               rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -47,11 +47,16 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                     role="checkbox"
                     tabIndex={-1}
                     key={row.id ?? rowIndex}
+                    onClick={() =>
+                      additionalData.setIsFinalFormEnabled({
+                        flag: true,
+                        data: row,
+                      })
+                    }
                   >
                     {columns.map((column) => {
                       const value = row[column.id];
                       if (column.id === "assignedTo") {
-                        console.log(column.id, value, "alue?.name");
                         return (
                           <TableCell key={column.id} align={column.align}>
                             <TextField

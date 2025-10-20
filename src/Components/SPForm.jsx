@@ -435,7 +435,7 @@ const SPForm = () => {
                           error={!!errors.penaltyType}
                           helperText={errors.penaltyType?.message}
                         >
-                          <MenuItem value="Fixed">Fixed</MenuItem>
+                          {/* <MenuItem value="Fixed">Fixed</MenuItem> */}
                           <MenuItem value="Percentage">Percentage</MenuItem>
                         </TextField>
                       )}
@@ -482,7 +482,7 @@ const SPForm = () => {
                           error={!!errors.incentiveType}
                           helperText={errors.incentiveType?.message}
                         >
-                          <MenuItem value="Fixed">Fixed</MenuItem>
+                          {/* <MenuItem value="Fixed">Fixed</MenuItem> */}
                           <MenuItem value="Percentage">Percentage</MenuItem>
                         </TextField>
                       )}

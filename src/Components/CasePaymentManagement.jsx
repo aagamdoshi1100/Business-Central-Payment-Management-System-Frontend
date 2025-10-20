@@ -8,25 +8,40 @@ import CreateCaseForm from "./CreateCaseForm";
 import useFetch from "../hooks/useFetch";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useCP } from "../context/CasePaymentContext";
+import PaymentConfirmation from "./PaymentConfirmation";
 
 const CasePaymentManagement = () => {
-  const { loading, err, data: casesData } = useFetch("/cases", "get");
+  const { loading, err, data: casesData } = useFetch("/cases", "get"); //Getting all cases
+
   const {
     loading: loadUsers,
     error: errorUsers,
     data: usersData,
-  } = useFetch("/user", "GET");
+  } = useFetch("/user", "GET"); //Getting all users
+
+  const {
+    loading: loadSP,
+    err: errSP,
+    data: serviceProviders,
+  } = useFetch("/service-provider", "get"); // Getting all service providers
+
+  const {
+    casesDetails,
+    setCasesDetails,
+    isFinalFormEnabled,
+    setIsFinalFormEnabled,
+  } = useCP();
 
   const filteredAgents = usersData?.users
     ? usersData?.users?.filter((fil) => fil?.accessType === "agent")
     : [];
 
   const [isFormEnabled, setFormEnabled] = useState(false);
-  const [casesDetails, setCasesDetails] = useState([]);
 
   useEffect(() => {
     setCasesDetails(casesData?.cases);
-  }, [casesData?.cases]);
+  }, [casesData?.cases, serviceProviders]);
 
   const handleAgentChange = async (e, caseNumber) => {
     try {
@@ -68,6 +83,7 @@ const CasePaymentManagement = () => {
               <CreateCaseForm
                 isFormEnabled={isFormEnabled}
                 setFormEnabled={setFormEnabled}
+                serviceProviders={serviceProviders}
               />
             )}
             <Button
@@ -77,12 +93,17 @@ const CasePaymentManagement = () => {
               Create Case
             </Button>
           </Stack>
+          {isFinalFormEnabled.flag && <PaymentConfirmation />}
 
           <DataTable
             columns={columns}
             rows={casesDetails ?? []}
             title="Cases"
-            additionalData={{ agents: filteredAgents, handleAgentChange }}
+            additionalData={{
+              agents: filteredAgents,
+              handleAgentChange,
+              setIsFinalFormEnabled,
+            }}
           />
         </Stack>
       </Stack>

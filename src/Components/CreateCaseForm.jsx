@@ -12,14 +12,8 @@ import { useEffect, useState } from "react";
 import { useForm, Controller, Watch } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
-import useFetch from "../hooks/useFetch";
 
-const CreateCaseForm = ({ setFormEnabled }) => {
-  const {
-    loading: loadSP,
-    err: errSP,
-    data: serviceProviders,
-  } = useFetch("/service-provider", "get");
+const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
 
@@ -115,7 +109,7 @@ const CreateCaseForm = ({ setFormEnabled }) => {
   };
 
   return (
-    <div className="caseOverlay" onClick={() => setFormEnabled(false)}>
+    <div className="Overlay" onClick={() => setFormEnabled(false)}>
       <form
         className="createCaseForm"
         onSubmit={handleSubmit(onSubmit)}

@@ -78,8 +78,6 @@ const SPForm = () => {
           : undefined,
       };
 
-      console.log("Sending data:", transformedData);
-
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/service-provider`,
         transformedData,
@@ -90,7 +88,6 @@ const SPForm = () => {
         }
       );
 
-      console.log("Success response:", res.data);
       toast.success(res?.data?.message || "Logged in successfully");
       // reset(); // Reset form after successful submission
     } catch (error) {

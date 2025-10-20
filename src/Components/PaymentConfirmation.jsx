@@ -19,8 +19,8 @@ import {
 } from "../utils/functions";
 
 const PaymentConfirmation = () => {
-  const { isFinalFormEnabled, setIsFinalFormEnabled } = useCP();
-  console.log(isFinalFormEnabled, "isFinal");
+  const { isFinalFormEnabled, setIsFinalFormEnabled, initiatePayment } =
+    useCP();
   const {
     loading,
     error,
@@ -111,7 +111,7 @@ const PaymentConfirmation = () => {
         className="paymentContainer"
         onClick={(e) => e.stopPropagation()}
         sx={{
-          width: 400,
+          width: 550,
           borderRadius: 3,
           boxShadow: 4,
           backgroundColor: "#fff",
@@ -159,23 +159,23 @@ const PaymentConfirmation = () => {
 
           <Box sx={{ lineHeight: 2 }}>
             <Typography variant="body2" color="text.secondary">
-              <strong>Name:</strong> {serviceProvider.name}
+              Name: <strong>{serviceProvider.name}</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <strong>Contact:</strong> {serviceProvider.contact}
+              Contact: <strong>{serviceProvider.contact}</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <strong>Bank Code:</strong> {serviceProvider.bankName}
+              Bank Code: <strong>{serviceProvider.bankName}</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <strong>Bank Account Number:</strong>{" "}
-              {serviceProvider.bankAccount}
+              Bank Account Number:{" "}
+              <strong>{serviceProvider.bankAccount}</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <strong>PAN Number:</strong> {serviceProvider.pan}
+              PAN Number: <strong>{serviceProvider.pan}</strong>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <strong>Email:</strong> {serviceProvider.email}
+              Email:<strong>{serviceProvider.email}</strong>
             </Typography>
           </Box>
 
@@ -190,6 +190,14 @@ const PaymentConfirmation = () => {
               backgroundColor: "#1976d2",
               ":hover": { backgroundColor: "#115293" },
             }}
+            onClick={() =>
+              initiatePayment(
+                isFinalFormEnabled?.data?._id,
+                isFinalFormEnabled?.data?.serviceProvider?._id,
+                isFinalFormEnabled?.data?.assignedTo?._id,
+                grossAmount
+              )
+            }
           >
             Proceed Payment
           </Button>

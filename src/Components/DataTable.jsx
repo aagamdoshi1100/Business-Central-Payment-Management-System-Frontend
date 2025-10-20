@@ -121,15 +121,23 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                       }
 
                       if (column.id === "status") {
+                        let finalColor;
+                        const finalValue = value?.toLowerCase();
+                        if (finalValue === "In progress".toLowerCase()) {
+                          finalColor = "green";
+                        } else if (finalValue === "open".toLowerCase()) {
+                          finalColor = "#1976d2";
+                        } else if (finalValue === "Paid".toLowerCase()) {
+                          finalColor = "#ff8600";
+                        }
                         return (
                           <TableCell
                             key={column.id}
                             sx={{
-                              color:
-                                value === "In progress" ? "green" : "#1976d2",
+                              color: finalColor,
                             }}
                           >
-                            {value?.split("T")?.[0]}
+                            {value?.toUpperCase()}
                           </TableCell>
                         );
                       }

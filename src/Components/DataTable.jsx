@@ -56,15 +56,29 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                               row?._id,
                               row?.accessEnabled
                             )
-                        : () =>
-                            additionalData?.setIsFinalFormEnabled({
-                              flag: true,
-                              data: row,
-                            })
+                        : ""
                     }
                   >
                     {columns.map((column) => {
                       const value = row[column.id];
+
+                      if (column.id === "caseNumber") {
+                        return (
+                          <TableCell
+                            key={column.id}
+                            sx={{ color: "#1976d2" }}
+                            onClick={() =>
+                              additionalData?.setIsFinalFormEnabled({
+                                flag: true,
+                                data: row,
+                              })
+                            }
+                          >
+                            {value}
+                          </TableCell>
+                        );
+                      }
+
                       if (column.id === "assignedTo") {
                         return (
                           <TableCell key={column.id} align={column.align}>

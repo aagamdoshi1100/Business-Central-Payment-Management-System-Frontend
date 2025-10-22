@@ -17,10 +17,15 @@ import {
   TDSCalculator,
   TradeDiscount,
 } from "../utils/functions";
+import PaymentDetails from "./PaymentDetails";
 
 const PaymentConfirmation = () => {
-  const { isFinalFormEnabled, setIsFinalFormEnabled, initiatePayment } =
-    useCP();
+  const {
+    isFinalFormEnabled,
+    setIsFinalFormEnabled,
+    initiatePayment,
+    getTransactionDetails,
+  } = useCP();
   const {
     loading,
     error,
@@ -100,6 +105,11 @@ const PaymentConfirmation = () => {
     pan: finalData?.pan,
     email: finalData?.email,
   };
+  useEffect(() => {
+    if (isFinalFormEnabled?.data?.status === "Paid") {
+      getTransactionDetails(isFinalFormEnabled?.data?._id);
+    }
+  }, []);
   useEffect(() => {}, [serviceProvider]);
 
   return (
@@ -107,102 +117,101 @@ const PaymentConfirmation = () => {
       className="Overlay"
       onClick={() => setIsFinalFormEnabled({ flag: false, data: {} })}
     >
-      <Card
-        className="paymentContainer"
-        onClick={(e) => e.stopPropagation()}
-        sx={{
-          width: 550,
-          borderRadius: 3,
-          boxShadow: 4,
-          backgroundColor: "#fff",
-        }}
-      >
-        <CardContent>
-          <Typography variant="h5" fontWeight={700}>
-            Payment Confirmation
-          </Typography>
-          <Typography variant="body2" color="text.secondary" mb={3}>
-            Review the details before proceeding.
-          </Typography>
-
-          {/* Payment Breakdown */}
-          <Stack spacing={1.5} mb={2}>
-            {paymentDetails.map((item, index) => (
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                key={item.label}
-                sx={{
-                  borderBottom:
-                    paymentDetails?.length - 1 !== index
-                      ? "0.5px solid #d6d5d5"
-                      : "",
-                  pb: 1,
-                }}
-              >
-                <Typography variant="body1" color="text.secondary">
-                  {item.label}
-                </Typography>
-                <Typography variant="body1" fontWeight={500}>
-                  {item.value}
-                </Typography>
-              </Stack>
-            ))}
-          </Stack>
-
-          <Divider sx={{ my: 2 }} />
-
-          {/* Service Provider Info */}
-          <Typography variant="subtitle1" fontWeight={600} mb={1}>
-            Service Provider Details
-          </Typography>
-
-          <Box sx={{ lineHeight: 2 }}>
-            <Typography variant="body2" color="text.secondary">
-              Name: <strong>{serviceProvider.name}</strong>
+      {isFinalFormEnabled?.data?.status !== "Paid" ? (
+        <Card
+          className="paymentContainer"
+          onClick={(e) => e.stopPropagation()}
+          sx={{
+            width: 550,
+            borderRadius: 3,
+            boxShadow: 4,
+            backgroundColor: "#fff",
+          }}
+        >
+          <CardContent>
+            <Typography variant="h5" fontWeight={700}>
+              Payment Confirmation
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Contact: <strong>{serviceProvider.contact}</strong>
+            <Typography variant="body2" color="text.secondary" mb={3}>
+              Review the details before proceeding.
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Bank Code: <strong>{serviceProvider.bankName}</strong>
+            {/* Payment Breakdown */}
+            <Stack spacing={1.5} mb={2}>
+              {paymentDetails.map((item, index) => (
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  key={item.label}
+                  sx={{
+                    borderBottom:
+                      paymentDetails?.length - 1 !== index
+                        ? "0.5px solid #d6d5d5"
+                        : "",
+                    pb: 1,
+                  }}
+                >
+                  <Typography variant="body1" color="text.secondary">
+                    {item.label}
+                  </Typography>
+                  <Typography variant="body1" fontWeight={500}>
+                    {item.value}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+            <Divider sx={{ my: 2 }} />
+            {/* Service Provider Info */}
+            <Typography variant="subtitle1" fontWeight={600} mb={1}>
+              Service Provider Details
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Bank Account Number:{" "}
-              <strong>{serviceProvider.bankAccount}</strong>
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              PAN Number: <strong>{serviceProvider.pan}</strong>
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Email:<strong>{serviceProvider.email}</strong>
-            </Typography>
-          </Box>
-
-          {/* Button */}
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{
-              mt: 3,
-              borderRadius: 2,
-              py: 1.2,
-              backgroundColor: "#1976d2",
-              ":hover": { backgroundColor: "#115293" },
-            }}
-            onClick={() =>
-              initiatePayment(
-                isFinalFormEnabled?.data?._id,
-                isFinalFormEnabled?.data?.serviceProvider?._id,
-                isFinalFormEnabled?.data?.assignedTo?._id,
-                grossAmount
-              )
-            }
-          >
-            Proceed Payment
-          </Button>
-        </CardContent>
-      </Card>
+            <Box sx={{ lineHeight: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                Name: <strong>{serviceProvider.name}</strong>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Contact: <strong>{serviceProvider.contact}</strong>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Bank Code: <strong>{serviceProvider.bankName}</strong>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Bank Account Number:{" "}
+                <strong>{serviceProvider.bankAccount}</strong>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                PAN Number: <strong>{serviceProvider.pan}</strong>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Email:<strong>{serviceProvider.email}</strong>
+              </Typography>
+            </Box>
+            {/* Button */}
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{
+                mt: 3,
+                borderRadius: 2,
+                py: 1.2,
+                backgroundColor: "#1976d2",
+                ":hover": { backgroundColor: "#115293" },
+              }}
+              onClick={() =>
+                initiatePayment(
+                  isFinalFormEnabled?.data?._id,
+                  isFinalFormEnabled?.data?.serviceProvider?._id,
+                  isFinalFormEnabled?.data?.assignedTo?._id,
+                  grossAmount
+                )
+              }
+            >
+              Proceed Payment
+            </Button>{" "}
+          </CardContent>
+        </Card>
+      ) : (
+        <PaymentDetails />
+      )}
     </div>
   );
 };

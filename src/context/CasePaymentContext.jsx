@@ -10,6 +10,7 @@ export const CasePaymentContextProvider = ({ children }) => {
     flag: false,
     data: {},
   });
+  const [transactionDetails, setTransactionDetails] = useState({});
 
   const initiatePayment = async (
     caseId,
@@ -41,6 +42,20 @@ export const CasePaymentContextProvider = ({ children }) => {
       toast.error(error?.response?.data?.message);
     }
   };
+
+  const getTransactionDetails = async (caseId) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/payment/cases/${caseId}`
+      );
+      setTransactionDetails(res?.data?.data);
+      toast.success(res?.data?.message);
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
   return (
     <CasePaymentContext.Provider
       value={{
@@ -49,6 +64,8 @@ export const CasePaymentContextProvider = ({ children }) => {
         isFinalFormEnabled,
         setIsFinalFormEnabled,
         initiatePayment,
+        getTransactionDetails,
+        transactionDetails,
       }}
     >
       {children}

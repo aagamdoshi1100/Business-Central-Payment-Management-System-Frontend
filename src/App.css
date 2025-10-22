@@ -1,5 +1,6 @@
 .createCaseForm,
-.paymentContainer {
+.paymentContainer,
+.paymentDetailsContainer {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -12,6 +13,9 @@
   inset: 0;
   z-index: 999;
   margin-top: 0 !important;
+}
+.paymentDetailsContainer {
+  width: 60%;
 }
 
 /* -------- Login  -------- */

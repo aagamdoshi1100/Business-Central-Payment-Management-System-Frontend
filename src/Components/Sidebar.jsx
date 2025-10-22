@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
@@ -7,8 +7,11 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import AppRegistrationOutlinedIcon from "@mui/icons-material/AppRegistrationOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
+  const { authenticatedUser, logout } = useAuth();
+  console.log(authenticatedUser, "authenticatedUser");
   return (
     <>
       <Box className="sideContainer">
@@ -73,10 +76,14 @@ const Sidebar = () => {
             </Typography>
           </NavLink>
         </Stack>
-        <NavLink to="/signup" className="sideItem sideItem-logout">
+        <Button
+          onClick={logout}
+          sx={{ justifyContent: "flex-start" }}
+          className="sideItem sideItem-logout"
+        >
           <LogoutOutlinedIcon color="gray" />
-          <Typography variant="body1">Logout</Typography>
-        </NavLink>
+          <Typography variant="body1">{authenticatedUser?.name}</Typography>
+        </Button>
       </Box>
       <div className="bgPadding"></div>
     </>

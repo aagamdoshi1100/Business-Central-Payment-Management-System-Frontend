@@ -11,19 +11,22 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import { UserPermissionProvider } from "./context/UserPermissionContext.jsx";
 import { DashboardContextProvider } from "./context/DashboardContext.jsx";
 import { ReportContextProvider } from "./context/ReportContext.jsx";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <UserPermissionProvider>
-        <CasePaymentContextProvider>
-          <DashboardContextProvider>
-            <ReportContextProvider>
-              <App />
-            </ReportContextProvider>
-          </DashboardContextProvider>
-        </CasePaymentContextProvider>
-      </UserPermissionProvider>
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <UserPermissionProvider>
+          <CasePaymentContextProvider>
+            <DashboardContextProvider>
+              <ReportContextProvider>
+                <App />
+              </ReportContextProvider>
+            </DashboardContextProvider>
+          </CasePaymentContextProvider>
+        </UserPermissionProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </StrictMode>
 );

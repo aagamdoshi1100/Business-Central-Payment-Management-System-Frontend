@@ -2,12 +2,13 @@ import { Button, MenuItem, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -40,6 +41,7 @@ const SignUp = () => {
       );
       const successMessage = res?.data?.message || "Signup successful";
       toast.success(successMessage);
+      navigate("/login");
       reset();
     } catch (error) {
       console.error(error);

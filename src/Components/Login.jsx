@@ -2,38 +2,23 @@ import { Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const [loading, setLoading] = useState(false);
+  const { submitloginData, loading } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
     reset,
   } = useForm({
     defaultValues: { email: "", password: "" },
     mode: "onBlur",
   });
 
-  const onSubmit = async (data) => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/login`,
-        data
-      );
-      toast.success(res?.data?.message || "Logged in successfully");
-      reset();
-    } catch (error) {
-      const message = error?.response?.data?.message || "Login failed";
-      toast.error(message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const data = watch();
+
   return (
     <div className="authContainer">
       <div className="left">
@@ -56,7 +41,7 @@ const Login = () => {
           <Typography variant="p" component="p">
             Enter your credentials to access your account
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(() => submitloginData(data, reset))}>
             <TextField
               id="email"
               label="Email"

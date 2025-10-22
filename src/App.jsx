@@ -9,25 +9,64 @@ import UserPermissions from "./Components/UserPermissions";
 import Sidebar from "./Components/Sidebar";
 import Dashboard from "./Components/Dashboard";
 import Reports from "./Components/Reports";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/service-provider-registration" element={<SPForm />} />
-          <Route
-            path="/cash-payment-management"
-            element={<CasePaymentManagement />}
-          />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/roles-and-permissions" element={<UserPermissions />} />
-          <Route path="/sidebar" element={<Sidebar />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/reports" element={<Reports />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/service-provider-registration"
+          element={
+            <ProtectedRoute>
+              <SPForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cash-payment-management"
+          element={
+            <ProtectedRoute>
+              <CasePaymentManagement />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/roles-and-permissions"
+          element={
+            <ProtectedRoute>
+              <UserPermissions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sidebar"
+          element={
+            <ProtectedRoute>
+              <Sidebar />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
 
       <ToastContainer />
     </>

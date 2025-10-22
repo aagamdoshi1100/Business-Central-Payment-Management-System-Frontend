@@ -34,9 +34,9 @@ const Dashboard = () => {
   const statCards = keyMetrics?.caseStats?.map((stat) => {
     // Map API _id to display titles
     const titleMap = {
-      open: "Total Due",
+      Open: "Total Due",
       Paid: "Total Paid",
-      "In progress": "In Progress",
+      "In progress": "In progress",
     };
 
     return (

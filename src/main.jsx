@@ -10,6 +10,7 @@ import { CasePaymentContextProvider } from "./context/CasePaymentContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { UserPermissionProvider } from "./context/UserPermissionContext.jsx";
 import { DashboardContextProvider } from "./context/DashboardContext.jsx";
+import { ReportContextProvider } from "./context/ReportContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,7 +18,9 @@ createRoot(document.getElementById("root")).render(
       <UserPermissionProvider>
         <CasePaymentContextProvider>
           <DashboardContextProvider>
-            <App />
+            <ReportContextProvider>
+              <App />
+            </ReportContextProvider>
           </DashboardContextProvider>
         </CasePaymentContextProvider>
       </UserPermissionProvider>

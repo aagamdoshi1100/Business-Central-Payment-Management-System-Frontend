@@ -49,19 +49,17 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                     role="checkbox"
                     tabIndex={-1}
                     key={row.id ?? rowIndex}
-                    onClick={
-                      location.pathname === "/roles-and-permissions"
-                        ? () =>
-                            additionalData?.updateUserPermission(
-                              row?._id,
-                              row?.accessEnabled
-                            )
-                        : ""
-                    }
+                    onClick={() => {
+                      if (location.pathname === "/roles-and-permissions") {
+                        additionalData?.updateUserPermission(
+                          row?._id,
+                          row?.accessEnabled
+                        );
+                      }
+                    }}
                   >
                     {columns.map((column) => {
                       const value = row[column.id];
-
                       if (column.id === "caseNumber") {
                         return (
                           <TableCell
@@ -113,7 +111,8 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
 
                       if (
                         column.id === "dueDate" ||
-                        column.id === "createdAt"
+                        column.id === "createdAt" ||
+                        column.id === "paymentDate"
                       ) {
                         return (
                           <TableCell key={column.id}>
@@ -139,7 +138,7 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                         const finalValue = value?.toLowerCase();
                         if (finalValue === "In progress".toLowerCase()) {
                           finalColor = "green";
-                        } else if (finalValue === "open".toLowerCase()) {
+                        } else if (finalValue === "Open".toLowerCase()) {
                           finalColor = "#1976d2";
                         } else if (finalValue === "Paid".toLowerCase()) {
                           finalColor = "#ff8600";
@@ -173,7 +172,7 @@ const DataTable = ({ columns, rows, title, additionalData }) => {
                   colSpan={columns.length}
                   sx={{ py: 3, color: "gray" }}
                 >
-                  No Case Found
+                  No Data Found
                 </TableCell>
               </TableRow>
             )}

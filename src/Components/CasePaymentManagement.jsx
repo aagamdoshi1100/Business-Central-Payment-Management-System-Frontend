@@ -10,15 +10,24 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useCP } from "../context/CasePaymentContext";
 import PaymentConfirmation from "./PaymentConfirmation";
+import usePaginatedData from "../hooks/usePaginatedData";
 
 const CasePaymentManagement = () => {
-  const { loading, err, data: casesData } = useFetch("/cases", "get"); //Getting all cases
+  const {
+    totalCount,
+    loading,
+    page,
+    setPage,
+    rowsPerPage,
+    setRowsPerPage,
+    refresh,
+  } = usePaginatedData("cases"); //Getting first 10 cases
 
   const {
     loading: loadUsers,
     error: errorUsers,
     data: usersData,
-  } = useFetch("/user", "GET"); //Getting all users
+  } = useFetch("/user", "GET"); //Getting first 10 users
 
   const {
     loading: loadSP,
@@ -39,9 +48,7 @@ const CasePaymentManagement = () => {
 
   const [isFormEnabled, setFormEnabled] = useState(false);
 
-  useEffect(() => {
-    setCasesDetails(casesData?.cases);
-  }, [casesData?.cases, serviceProviders]);
+  useEffect(() => {}, [serviceProviders]);
 
   const handleAgentChange = async (e, caseNumber) => {
     try {
@@ -99,6 +106,11 @@ const CasePaymentManagement = () => {
             columns={columns}
             rows={casesDetails ?? []}
             title="Cases"
+            totalCount={totalCount}
+            page={page}
+            setPage={setPage}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
             additionalData={{
               agents: filteredAgents,
               handleAgentChange,

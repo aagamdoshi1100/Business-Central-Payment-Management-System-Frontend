@@ -49,7 +49,6 @@ export const CasePaymentContextProvider = ({ children }) => {
         `${import.meta.env.VITE_API_URL}/payment/cases/${caseId}`
       );
       setTransactionDetails(res?.data?.data);
-      toast.success(res?.data?.message);
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message);

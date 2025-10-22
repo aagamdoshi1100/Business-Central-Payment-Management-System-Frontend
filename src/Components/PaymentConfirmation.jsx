@@ -17,15 +17,11 @@ import {
   TDSCalculator,
   TradeDiscount,
 } from "../utils/functions";
-import PaymentDetails from "./PaymentDetails";
+import ViewTransaction from "./ViewTransaction";
 
 const PaymentConfirmation = () => {
-  const {
-    isFinalFormEnabled,
-    setIsFinalFormEnabled,
-    initiatePayment,
-    getTransactionDetails,
-  } = useCP();
+  const { isFinalFormEnabled, setIsFinalFormEnabled, initiatePayment } =
+    useCP();
   const {
     loading,
     error,
@@ -105,11 +101,6 @@ const PaymentConfirmation = () => {
     pan: finalData?.pan,
     email: finalData?.email,
   };
-  useEffect(() => {
-    if (isFinalFormEnabled?.data?.status === "Paid") {
-      getTransactionDetails(isFinalFormEnabled?.data?._id);
-    }
-  }, []);
   useEffect(() => {}, [serviceProvider]);
 
   return (
@@ -210,7 +201,7 @@ const PaymentConfirmation = () => {
           </CardContent>
         </Card>
       ) : (
-        <PaymentDetails />
+        <ViewTransaction />
       )}
     </div>
   );

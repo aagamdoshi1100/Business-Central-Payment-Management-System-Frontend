@@ -1,20 +1,22 @@
 import { Typography, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import DataTable from "./DataTable";
-import useFetch from "../hooks/useFetch";
 import Sidebar from "./Sidebar";
 import { userPermissionColums } from "../data";
 import { usePermission } from "../context/UserPermissionContext";
+import usePaginatedData from "../hooks/usePaginatedData";
 
 const UserPermissions = () => {
-  const { data, loading, error } = useFetch("/user", "GET");
-  const { updateUserPermission, users, setUsers } = usePermission();
+  const {
+    totalCount,
+    loading,
+    page,
+    setPage,
+    rowsPerPage,
+    setRowsPerPage,
+    refresh,
+  } = usePaginatedData("user");
 
-  useEffect(() => {
-    if (data?.users) {
-      setUsers(data.users);
-    }
-  }, [data]);
+  const { updateUserPermission, users } = usePermission();
 
   return (
     <div className="container">
@@ -31,6 +33,11 @@ const UserPermissions = () => {
           rows={users}
           title={"Users"}
           additionalData={{ updateUserPermission }}
+          totalCount={totalCount}
+          page={page}
+          setPage={setPage}
+          rowsPerPage={rowsPerPage}
+          setRowsPerPage={setRowsPerPage}
         />
       </Stack>
     </div>

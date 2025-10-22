@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Card,
@@ -25,9 +25,17 @@ import {
 } from "@mui/icons-material";
 import { useCP } from "../context/CasePaymentContext";
 
-const PaymentDetails = () => {
-  const { transactionDetails } = useCP();
+const ViewTransaction = () => {
+  const { isFinalFormEnabled, transactionDetails, getTransactionDetails } =
+    useCP();
+
+  useEffect(() => {
+    if (isFinalFormEnabled?.data?.status === "Paid") {
+      getTransactionDetails(isFinalFormEnabled?.data?._id);
+    }
+  }, []);
   console.log(transactionDetails, "transactionDetails");
+
   const caseData = {
     ...transactionDetails?.[0],
   };
@@ -62,7 +70,7 @@ const PaymentDetails = () => {
         >
           <Box>
             <Typography
-              variant="h4"
+              variant="h5"
               component="h1"
               sx={{ fontWeight: "bold", color: "primary.main" }}
             >
@@ -232,4 +240,4 @@ const PaymentDetails = () => {
   );
 };
 
-export default PaymentDetails;
+export default ViewTransaction;

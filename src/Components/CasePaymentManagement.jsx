@@ -63,6 +63,7 @@ const CasePaymentManagement = () => {
               return {
                 ...ca,
                 status: "In progress",
+                assignedTo: { _id: e.target.value },
               };
             }
             return ca;

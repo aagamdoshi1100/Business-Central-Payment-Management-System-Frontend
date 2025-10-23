@@ -86,29 +86,33 @@ const DataTable = ({
                     if (column.id === "assignedTo") {
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          <TextField
-                            select
-                            sx={{ minWidth: 140 }}
-                            size="small"
-                            label="Select Agent"
-                            defaultValue={value?._id ?? ""}
-                            onChange={(e) =>
-                              additionalData.handleAgentChange(
-                                e,
-                                row["caseNumber"]
-                              )
-                            }
-                          >
-                            {additionalData?.agents?.length > 0 ? (
-                              additionalData?.agents?.map((ag) => (
-                                <MenuItem key={ag._id} value={ag._id}>
-                                  {ag.name}
+                          {additionalData?.agents?.length > 0 && (
+                            <TextField
+                              select
+                              sx={{ minWidth: 140 }}
+                              size="small"
+                              label="Select Agent"
+                              defaultValue={value?._id ?? ""}
+                              onChange={(e) =>
+                                additionalData.handleAgentChange(
+                                  e,
+                                  row["caseNumber"]
+                                )
+                              }
+                            >
+                              {additionalData?.agents?.length > 0 ? (
+                                additionalData?.agents?.map((ag) => (
+                                  <MenuItem key={ag._id} value={ag._id}>
+                                    {ag.name}
+                                  </MenuItem>
+                                ))
+                              ) : (
+                                <MenuItem disabled>
+                                  No agents available
                                 </MenuItem>
-                              ))
-                            ) : (
-                              <MenuItem disabled>No agents available</MenuItem>
-                            )}
-                          </TextField>
+                              )}
+                            </TextField>
+                          )}
                         </TableCell>
                       );
                     }

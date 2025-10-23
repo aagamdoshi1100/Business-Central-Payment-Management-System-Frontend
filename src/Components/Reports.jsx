@@ -17,6 +17,7 @@ import { useReport } from "../context/ReportContext";
 import DataTable from "./DataTable";
 import { reportsColumns } from "../data";
 import GetAppIcon from "@mui/icons-material/GetApp";
+import api from "../utils/axios";
 
 const Reports = () => {
   const [loading, setLoading] = useState(false);
@@ -33,10 +34,7 @@ const Reports = () => {
     if (loading) return;
     setLoading(true);
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/payment/report`,
-        data
-      );
+      const res = await api.post(`/payment/report`, data);
       setReports(res.data);
     } catch (error) {
       console.error(error);

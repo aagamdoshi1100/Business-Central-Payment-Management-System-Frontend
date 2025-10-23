@@ -11,6 +11,7 @@ import axios from "axios";
 import { useCP } from "../context/CasePaymentContext";
 import PaymentConfirmation from "./PaymentConfirmation";
 import usePaginatedData from "../hooks/usePaginatedData";
+import api from "../utils/axios";
 
 const CasePaymentManagement = () => {
   const {
@@ -52,11 +53,9 @@ const CasePaymentManagement = () => {
 
   const handleAgentChange = async (e, caseNumber) => {
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_URL}/cases/${caseNumber}`,
-        { assignedTo: e.target.value },
-        { headers: "Content-Type:application/json" }
-      );
+      const res = await api.put(`/cases/${caseNumber}`, {
+        assignedTo: e.target.value,
+      });
       if (res.statusText === "OK") {
         setCasesDetails((prev) => {
           return prev.map((ca) => {

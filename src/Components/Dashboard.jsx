@@ -3,8 +3,8 @@ import Sidebar from "./Sidebar";
 import { Paper, Stack, Typography, Card, CardContent } from "@mui/material";
 import { useDashboard } from "../context/DashboardContext";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { PieChart } from "@mui/x-charts/PieChart";
+import api from "../utils/axios";
 
 const Dashboard = () => {
   const { keyMetrics, setKeyMetrics } = useDashboard();
@@ -12,9 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_API_URL}/payment/getBasicDetails`
-        );
+        const res = await api.get(`/payment/getBasicDetails`);
 
         setKeyMetrics((prev) => {
           return {

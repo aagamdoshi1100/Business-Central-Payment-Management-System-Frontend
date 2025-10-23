@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useCP } from "../context/CasePaymentContext";
 import { usePermission } from "../context/UserPermissionContext";
+import api from "../utils/axios";
 
 const usePaginatedData = (endpoint, defaultLimit = 10) => {
   const [page, setPage] = useState(0);
@@ -14,10 +15,8 @@ const usePaginatedData = (endpoint, defaultLimit = 10) => {
   const fetchData = async (currentPage = page, currentLimit = rowsPerPage) => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        `${
-          import.meta.env.VITE_API_URL
-        }/${endpoint}?page=${currentPage}&limit=${currentLimit}`
+      const res = await api.get(
+        `/${endpoint}?page=${currentPage}&limit=${currentLimit}`
       );
       if (endpoint === "cases") setCasesDetails(res.data?.cases);
       if (endpoint === "user") setUsers(res.data?.users);

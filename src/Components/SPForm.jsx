@@ -10,9 +10,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import axios from "axios";
 import { toast } from "react-toastify";
 import Sidebar from "./Sidebar";
+import api from "../utils/axios";
 
 const SPForm = () => {
   const [loading, setLoading] = useState(false);
@@ -78,15 +78,7 @@ const SPForm = () => {
           : undefined,
       };
 
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/service-provider`,
-        transformedData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await api.post(`/service-provider`, transformedData);
 
       toast.success(res?.data?.message || "Logged in successfully");
       reset(); // Reset form after successful submission

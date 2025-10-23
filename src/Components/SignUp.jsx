@@ -27,7 +27,6 @@ const SignUp = () => {
   });
 
   const data = watch();
-  console.log(data);
 
   const onSubmit = async () => {
     if (loading) return;

@@ -11,7 +11,6 @@ import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
   const { authenticatedUser, logout } = useAuth();
-  console.log(authenticatedUser, "authenticatedUser");
   return (
     <>
       <Box className="sideContainer">

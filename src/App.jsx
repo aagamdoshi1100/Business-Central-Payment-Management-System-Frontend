@@ -10,8 +10,16 @@ import Sidebar from "./Components/Sidebar";
 import Dashboard from "./Components/Dashboard";
 import Reports from "./Components/Reports";
 import ProtectedRoute from "./Components/ProtectedRoute";
+import { useAuth } from "./context/AuthContext";
+import { useEffect } from "react";
 
 function App() {
+  const { me } = useAuth();
+
+  useEffect(() => {
+    me();
+  }, []);
+
   return (
     <>
       <Routes>

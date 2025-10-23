@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import api from "../utils/axios";
 
 function useFetch(endpoint, method, headers, body) {
   const [loading, setLoading] = useState(false);
@@ -16,11 +17,7 @@ function useFetch(endpoint, method, headers, body) {
       try {
         const config = {
           method: method.toLowerCase(),
-          url: `${import.meta.env.VITE_API_URL}${endpoint}`,
-          headers: {
-            "Content-Type": "application/json",
-            ...headers,
-          },
+          url: `${endpoint}`,
         };
 
         if (
@@ -30,7 +27,7 @@ function useFetch(endpoint, method, headers, body) {
           config.data = body;
         }
 
-        const res = await axios(config);
+        const res = await api(config);
         setData(res.data);
       } catch (error) {
         console.log(error);

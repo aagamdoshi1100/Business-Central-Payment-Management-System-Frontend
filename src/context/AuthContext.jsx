@@ -2,10 +2,11 @@ import React, { createContext, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import api from "../utils/axios.js";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [checkingAuth, setCheckingAuth] = useState(true);
   const [authenticatedUser, setAuthenticatedUser] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -14,10 +15,7 @@ export const AuthProvider = ({ children }) => {
     if (loading) return;
     setLoading(true);
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/login`,
-        data
-      );
+      const res = await api.post(`/user/login`, data);
       toast.success(res?.data?.message || "Logged in successfully");
       setAuthenticatedUser(res?.data?.user);
       navigate("/dashboard");
@@ -32,11 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/user/logout`,
-        {},
-        { withCredentials: true }
-      );
+      await api.post(`/user/logout`);
     } catch (error) {
       console.error("Logout API error:", error);
     } finally {
@@ -45,9 +39,29 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const me = async () => {
+    try {
+      const res = await api.get("/user/me");
+      setAuthenticatedUser(res?.data?.user);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setCheckingAuth(false);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ authenticatedUser, submitloginData, loading, logout }}
+      value={{
+        authenticatedUser,
+        submitloginData,
+        loading,
+        logout,
+        me,
+        setAuthenticatedUser,
+        checkingAuth,
+        setCheckingAuth,
+      }}
     >
       {children}
     </AuthContext.Provider>

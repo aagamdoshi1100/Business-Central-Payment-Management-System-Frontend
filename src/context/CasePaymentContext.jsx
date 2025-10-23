@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useState, useContext } from "react";
 import { toast } from "react-toastify";
+import api from "../utils/axios";
 
 const CasePaymentContext = createContext();
 
@@ -19,7 +20,7 @@ export const CasePaymentContextProvider = ({ children }) => {
     amount
   ) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/payment`, {
+      const res = await api.post(`/payment`, {
         caseId,
         serviceProviderId,
         agentId,
@@ -45,9 +46,7 @@ export const CasePaymentContextProvider = ({ children }) => {
 
   const getTransactionDetails = async (caseId) => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/payment/cases/${caseId}`
-      );
+      const res = await api.get(`/payment/cases/${caseId}`);
       setTransactionDetails(res?.data?.data);
     } catch (error) {
       console.log(error);

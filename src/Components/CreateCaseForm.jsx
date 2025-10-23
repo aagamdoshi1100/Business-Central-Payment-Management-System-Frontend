@@ -13,6 +13,7 @@ import { useForm, Controller, Watch } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useCP } from "../context/CasePaymentContext";
+import api from "../utils/axios";
 
 const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
   const [loading, setLoading] = useState(false);
@@ -41,15 +42,9 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
     setErr("");
     timeOutId = setTimeout(async () => {
       if (workReference?.length > 5) {
-        const res = await axios.post(
-          `${import.meta.env.VITE_API_URL}/cases/validateWorkId`,
-          { workReference: workReference.trim() },
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const res = await api.post(`/cases/validateWorkId`, {
+          workReference: workReference.trim(),
+        });
         if (!res?.data?.success) {
           setError("workReferenceId", {
             type: "server",
@@ -80,15 +75,7 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
         amount: parseFloat(formData.amount),
       };
 
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/cases`,
-        transformedData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const res = await api.post(`/cases`, transformedData  );
 
       toast.success(res?.data?.message || "Case created successfully");
       setCasesDetails((prev) => [res?.data?.newCase, ...prev]);

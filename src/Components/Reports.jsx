@@ -11,13 +11,13 @@ import {
   Stack,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import Sidebar from "./Sidebar";
 import { useReport } from "../context/ReportContext";
 import DataTable from "./DataTable";
 import { reportsColumns } from "../data";
 import GetAppIcon from "@mui/icons-material/GetApp";
 import api from "../utils/axios";
+import { toast } from "react-toastify";
 
 const Reports = () => {
   const [loading, setLoading] = useState(false);
@@ -38,6 +38,7 @@ const Reports = () => {
       setReports(res.data);
     } catch (error) {
       console.error(error);
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }

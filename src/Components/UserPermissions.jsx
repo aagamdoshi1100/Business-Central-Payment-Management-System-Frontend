@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 import { userPermissionColums } from "../data";
 import { usePermission } from "../context/UserPermissionContext";
 import usePaginatedData from "../hooks/usePaginatedData";
-
+import { useAuth } from "../context/AuthContext";
 const UserPermissions = () => {
   const {
     totalCount,
@@ -17,7 +17,18 @@ const UserPermissions = () => {
   } = usePaginatedData("user");
 
   const { updateUserPermission, users } = usePermission();
+  const { authenticatedUser } = useAuth();
 
+  let filteredUsers = [];
+  if (authenticatedUser?.accessType !== "admin") {
+    filteredUsers = users?.filter((user) => {
+      if (user?.accessType === authenticatedUser?.accessType) {
+        return user;
+      }
+    });
+  } else {
+    filteredUsers = [...users];
+  }
   return (
     <div className="container">
       <Sidebar />
@@ -30,7 +41,7 @@ const UserPermissions = () => {
         </Typography>
         <DataTable
           columns={userPermissionColums}
-          rows={users}
+          rows={filteredUsers}
           title={"Users"}
           additionalData={{ updateUserPermission }}
           totalCount={totalCount}

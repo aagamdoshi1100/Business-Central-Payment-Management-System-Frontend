@@ -11,7 +11,7 @@ export const UserPermissionProvider = ({ children }) => {
   });
   const [users, setUsers] = useState([]);
 
-  const updateUserPermission = async (accountId, status, privilege) => {
+  const updateUserPermission = async (accountId, status) => {
     try {
       const res = await api.put(`/user/${accountId}`, { accountId, status });
       setUsers((prev) => {
@@ -28,7 +28,7 @@ export const UserPermissionProvider = ({ children }) => {
       toast.success(res?.data?.message);
     } catch (error) {
       console.log(error);
-      toast.error(error);
+      toast.error(error.response.data.message);
     }
   };
 

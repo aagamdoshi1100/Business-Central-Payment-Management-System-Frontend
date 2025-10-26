@@ -100,3 +100,36 @@ export const reportsColumns = [
     minWidth: 100,
   },
 ];
+
+export const logsColumns = [
+  {
+    id: "userId",
+    label: "User ID",
+    minWidth: 130,
+  },
+  {
+    id: "name",
+    label: "Name",
+    minWidth: 100,
+  },
+  {
+    id: "accessType",
+    label: "Access Type",
+    minWidth: 100,
+  },
+  {
+    id: "action",
+    label: "Action",
+    minWidth: 220,
+  },
+  {
+    id: "ipAddress",
+    label: "IP Address",
+    minWidth: 120,
+  },
+  {
+    id: "created",
+    label: "Created At (UTC+0)",
+    minWidth: 120,
+  },
+];

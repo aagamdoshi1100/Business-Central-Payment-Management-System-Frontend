@@ -8,7 +8,7 @@ import AppRegistrationOutlinedIcon from "@mui/icons-material/AppRegistrationOutl
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
+import SummarizeIcon from "@mui/icons-material/Summarize";
 const Sidebar = () => {
   const { authenticatedUser, logout } = useAuth();
   return (
@@ -73,6 +73,16 @@ const Sidebar = () => {
             <Typography variant="body1">
               Service Provider Registration
             </Typography>
+          </NavLink>
+
+          <NavLink
+            to="/logs"
+            className={({ isActive }) =>
+              isActive ? "sideItem active" : "sideItem"
+            }
+          >
+            <SummarizeIcon color="gray" />
+            <Typography variant="body1">Logs</Typography>
           </NavLink>
         </Stack>
         <Button

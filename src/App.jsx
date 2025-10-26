@@ -12,10 +12,10 @@ import Reports from "./Components/Reports";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import { useEffect } from "react";
+import UserLogs from "./Components/UserLogs";
 
 function App() {
   const { me } = useAuth();
-
   useEffect(() => {
     me();
   }, []);
@@ -71,6 +71,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Reports />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/logs"
+          element={
+            <ProtectedRoute>
+              <UserLogs />
             </ProtectedRoute>
           }
         />

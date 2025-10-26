@@ -1,4 +1,4 @@
-import axios from "axios";
+import * as XLSX from "xlsx";
 import React, { createContext, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import api from "../utils/axios";
@@ -12,6 +12,12 @@ export const CasePaymentContextProvider = ({ children }) => {
     data: {},
   });
   const [transactionDetails, setTransactionDetails] = useState({});
+  const [fileData, setFileData] = useState({
+    data: [],
+    name: "",
+    errMess: "",
+    loading: false,
+  });
 
   const initiatePayment = async (
     caseId,
@@ -54,6 +60,64 @@ export const CasePaymentContextProvider = ({ children }) => {
     }
   };
 
+  const handleUploadedFile = (e) => {
+    if (fileData?.loading) return;
+    setFileData((prev) => ({
+      ...prev,
+      loading: true,
+    }));
+    try {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async (event) => {
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const json = XLSX.utils.sheet_to_json(sheet);
+        if (
+          (!json[0].serviceProvider,
+          !json[0].workReferenceId,
+          !json[0].description,
+          !json[0].dueDate,
+          !json[0].amount)
+        ) {
+          toast.error("Invalid columns");
+          setFileData((prev) => ({
+            ...prev,
+            errMess: "Invalid columns",
+          }));
+        } else {
+          try {
+            const res = await api.post(`/cases/createBulkCases`, json);
+            setFileData((prev) => ({
+              ...prev,
+              name: file.name,
+              data: json,
+            }));
+            toast.success(res.data.message, {
+              style: { whiteSpace: "pre-line" },
+            });
+          } catch (err) {
+            toast.error(err.response.data.message, {
+              style: { whiteSpace: "pre-line" },
+            });
+          }
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      setFileData((prev) => ({
+        ...prev,
+        loading: false,
+      }));
+    }
+  };
+
   return (
     <CasePaymentContext.Provider
       value={{
@@ -64,6 +128,8 @@ export const CasePaymentContextProvider = ({ children }) => {
         initiatePayment,
         getTransactionDetails,
         transactionDetails,
+        handleUploadedFile,
+        fileData,
       }}
     >
       {children}

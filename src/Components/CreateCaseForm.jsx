@@ -9,16 +9,17 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useForm, Controller, Watch } from "react-hook-form";
-import axios from "axios";
+import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useCP } from "../context/CasePaymentContext";
 import api from "../utils/axios";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 
 const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
-  const { setCasesDetails } = useCP();
+  const { setCasesDetails, handleUploadedFile, fileData } = useCP();
   const {
     control,
     handleSubmit,
@@ -75,7 +76,7 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
         amount: parseFloat(formData.amount),
       };
 
-      const res = await api.post(`/cases`, transformedData  );
+      const res = await api.post(`/cases`, transformedData);
 
       toast.success(res?.data?.message || "Case created successfully");
       setCasesDetails((prev) => [res?.data?.newCase, ...prev]);
@@ -91,6 +92,18 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
     }
   };
 
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+
   return (
     <div className="Overlay" onClick={() => setFormEnabled(false)}>
       <form
@@ -102,14 +115,14 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
           <CardContent>
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography
-                variant="h4"
+                variant="h5"
                 component="h4"
                 sx={{ fontWeight: "Bold" }}
               >
                 Create New Case
               </Typography>
 
-              <Typography variant="p" component="p" sx={{ color: "gray" }}>
+              <Typography variant="p" component="p" color="gray">
                 Please fill in the details to create a new case.
               </Typography>
             </Stack>
@@ -268,7 +281,7 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
               </Grid>
             </Grid>
 
-            <Stack direction={"row"} justifyContent={"flex-end"} sx={{ mt: 2 }}>
+            <Stack direction={"row"} justifyContent={"flex-end"} sx={{ m: 2 }}>
               <Button
                 variant="contained"
                 size="medium"
@@ -278,6 +291,45 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
                 {loading ? "Creating..." : "Create Case"}
               </Button>
             </Stack>
+
+            <hr />
+            <Typography
+              variant="subtitle1"
+              component="h4"
+              sx={{ fontWeight: "bold", mt: 2 }}
+            >
+              Bulk import cases
+            </Typography>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              sx={{ mt: 1, gap: 2 }}
+            >
+              <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+              >
+                {fileData?.loading ? "Processing..." : "Upload file"}
+                <VisuallyHiddenInput
+                  type="file"
+                  onChange={(event) => handleUploadedFile(event)}
+                  multiple
+                />
+              </Button>
+              {fileData?.name && fileData?.name}
+            </Stack>
+            <Typography
+              variant="caption"
+              component="p"
+              color="red"
+              sx={{ mt: 2 }}
+            >
+              Note: Template must contain these columns: serviceProvider,
+              workReferenceId, description, dueDate, amount.
+            </Typography>
           </CardContent>
         </Card>
       </form>

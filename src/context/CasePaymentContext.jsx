@@ -19,22 +19,12 @@ export const CasePaymentContextProvider = ({ children }) => {
     loading: false,
   });
 
-  const initiatePayment = async (
-    caseId,
-    serviceProviderId,
-    agentId,
-    amount
-  ) => {
+  const initiatePayment = async (rowData) => {
     try {
-      const res = await api.post(`/payment`, {
-        caseId,
-        serviceProviderId,
-        agentId,
-        amount,
-      });
+      const res = await api.post(`/payment`, rowData);
       setCasesDetails((prev) => {
         return prev?.map((c) => {
-          if (c._id === caseId) {
+          if (c._id === rowData?.caseId) {
             return {
               ...c,
               status: "Paid",

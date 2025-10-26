@@ -5,14 +5,12 @@ import {
   CardContent,
   Typography,
   Chip,
-  Grid,
   Divider,
   Paper,
   Table,
   TableBody,
   TableCell,
   TableRow,
-  Container,
   Stack,
 } from "@mui/material";
 import {
@@ -34,12 +32,10 @@ const ViewTransaction = () => {
       getTransactionDetails(isFinalFormEnabled?.data?._id);
     }
   }, []);
-  console.log(transactionDetails, "transactionDetails");
 
   const caseData = {
     ...transactionDetails?.[0],
   };
-
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -58,7 +54,11 @@ const ViewTransaction = () => {
   };
 
   return (
-    <Card className="paymentDetailsContainer" elevation={3}>
+    <Card
+      className="paymentDetailsContainer"
+      elevation={3}
+      onClick={(e) => e.stopPropagation()}
+    >
       <CardContent sx={{ p: 3 }}>
         <Box
           sx={{
@@ -117,25 +117,67 @@ const ViewTransaction = () => {
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontWeight: "bold", border: "none" }}>
-                  Amount
-                </TableCell>
-                <TableCell
-                  sx={{
-                    border: "none",
-                    fontSize: "1.25rem",
-                    fontWeight: "bold",
-                    color: "success.main",
-                  }}
-                >
-                  {formatCurrency(caseData.amount)}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell sx={{ fontWeight: "bold", border: "none" }}>
                   Payment Date
                 </TableCell>
                 <TableCell sx={{ border: "none" }}>
                   {formatDate(caseData.paymentDate)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", border: "none" }}>
+                  GST
+                </TableCell>
+                <TableCell sx={{ border: "none" }}>
+                  {formatCurrency(caseData.GSTAmount)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", border: "none" }}>
+                  SLA Amount
+                </TableCell>
+                <TableCell sx={{ border: "none" }}>
+                  {formatCurrency(caseData.SLAAmountValue)} (
+                  {caseData.SLAType?.charAt(0).toUpperCase() +
+                    caseData.SLAType?.slice(1).toLowerCase()}
+                  )
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", border: "none" }}>
+                  TDS
+                </TableCell>
+                <TableCell sx={{ border: "none" }}>
+                  {formatCurrency(caseData.TDSAmount)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", border: "none" }}>
+                  Trade Discount
+                </TableCell>
+                <TableCell sx={{ border: "none" }}>
+                  {formatCurrency(caseData.TradeDiscountAmount)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", border: "none" }}>
+                  Convenience Charges
+                </TableCell>
+                <TableCell sx={{ border: "none" }}>
+                  {formatCurrency(caseData.convenienceCharges)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", border: "none" }}>
+                  Net Amount
+                </TableCell>
+                <TableCell
+                  sx={{
+                    border: "none",
+                    fontWeight: "bold",
+                    color: "success.main",
+                  }}
+                >
+                  {formatCurrency(caseData.NetAmount)}
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -229,12 +271,12 @@ const ViewTransaction = () => {
           </Paper>
         </Stack>
 
-        <Typography variant="h6" sx={{ mt: 4 }}>
+        {/* <Typography variant="h6" sx={{ mt: 4 }}>
           Remarks
         </Typography>
         <Typography variant="body1" sx={{ mt: 1 }}>
           {caseData.remarks}
-        </Typography>
+        </Typography> */}
       </CardContent>
     </Card>
   );

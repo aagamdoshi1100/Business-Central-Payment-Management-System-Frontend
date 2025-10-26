@@ -46,7 +46,7 @@ const PaymentConfirmation = () => {
     finalData?.slaTerms,
     isFinalFormEnabled?.data?.dueDate
   );
-  let grossAmount =
+  let NetAmount =
     baseAmount +
     GSTAmount -
     TDSAmount -
@@ -54,9 +54,9 @@ const PaymentConfirmation = () => {
     convenienceCharges;
 
   if (SLAAmount?.status === "incentive") {
-    grossAmount += SLAAmount?.value;
+    NetAmount += SLAAmount?.value;
   } else {
-    grossAmount -= SLAAmount?.value;
+    NetAmount -= SLAAmount?.value;
   }
 
   const paymentDetails = [
@@ -88,8 +88,8 @@ const PaymentConfirmation = () => {
       value: "+" + convenienceCharges,
     },
     {
-      label: "Gross Amount",
-      value: grossAmount,
+      label: "Net Amount",
+      value: NetAmount,
     },
   ];
 
@@ -188,12 +188,20 @@ const PaymentConfirmation = () => {
                 ":hover": { backgroundColor: "#115293" },
               }}
               onClick={() =>
-                initiatePayment(
-                  isFinalFormEnabled?.data?._id,
-                  isFinalFormEnabled?.data?.serviceProvider?._id,
-                  isFinalFormEnabled?.data?.assignedTo?._id,
-                  grossAmount
-                )
+                initiatePayment({
+                  caseId: isFinalFormEnabled?.data?._id,
+                  serviceProviderId:
+                    isFinalFormEnabled?.data?.serviceProvider?._id,
+                  agentId: isFinalFormEnabled?.data?.assignedTo?._id,
+                  NetAmount,
+                  baseAmount,
+                  GSTAmount,
+                  TDSAmount,
+                  TradeDiscountAmount,
+                  convenienceCharges,
+                  SLAAmountValue: SLAAmount?.value,
+                  SLAType: SLAAmount?.status,
+                })
               }
             >
               Proceed Payment

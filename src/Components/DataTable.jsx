@@ -169,6 +169,14 @@ const DataTable = ({
                       );
                     }
 
+                    if (column.id === "NetAmount") {
+                      return (
+                        <TableCell key={column.id}>
+                          {value.toFixed(2)}
+                        </TableCell>
+                      );
+                    }
+
                     return <TableCell key={column.id}>{value}</TableCell>;
                   })}
                 </TableRow>

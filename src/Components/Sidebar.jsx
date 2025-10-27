@@ -103,7 +103,10 @@ const Sidebar = () => {
           className="sideItem sideItem-logout"
         >
           <LogoutOutlinedIcon color="gray" />
-          <Typography variant="body1">{authenticatedUser?.name}</Typography>
+          <Typography variant="body1">
+            {authenticatedUser?.name} (
+            {authenticatedUser?.accessType.toUpperCase()})
+          </Typography>
         </Button>
       </Box>
       <div className="bgPadding"></div>

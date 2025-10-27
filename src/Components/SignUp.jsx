@@ -162,6 +162,8 @@ const SignUp = () => {
             >
               <MenuItem value={"agent"}>Agent</MenuItem>
               <MenuItem value={"admin"}>Admin</MenuItem>
+              <MenuItem value={"finance"}>Finance</MenuItem>
+              <MenuItem value={"auditor"}>Auditor</MenuItem>
             </TextField>
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
               {loading ? "Loading..." : "Submit"}

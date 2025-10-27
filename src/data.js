@@ -75,7 +75,7 @@ export const reportsColumns = [
     minWidth: 100,
   },
   {
-    id: "amount",
+    id: "NetAmount",
     label: "Amount",
     minWidth: 80,
   },

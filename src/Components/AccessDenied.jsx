@@ -49,7 +49,7 @@ const AccessDenied = () => {
       </Typography>
 
       {/* Buttons */}
-      <Stack direction="row" spacing={2}>
+      {/* <Stack direction="row" spacing={2}>
         <Button
           variant="contained"
           color="primary"
@@ -62,7 +62,7 @@ const AccessDenied = () => {
         >
           Return to Dashboard
         </Button>
-      </Stack>
+      </Stack> */}
     </Box>
   );
 };

@@ -89,7 +89,7 @@ const PaymentConfirmation = () => {
     },
     {
       label: "Net Amount",
-      value: NetAmount,
+      value: NetAmount.toFixed(2),
     },
   ];
 

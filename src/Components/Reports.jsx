@@ -35,7 +35,11 @@ const Reports = () => {
     setLoading(true);
     try {
       const res = await api.post(`/payment/report`, data);
-      setReports(res.data);
+      if (res.request.status === 204) {
+        toast.error("No Data Available");
+      } else {
+        setReports(res.data);
+      }
     } catch (error) {
       console.error(error);
       toast.error(error.response.data.message);

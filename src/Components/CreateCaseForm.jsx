@@ -20,6 +20,7 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const { setCasesDetails, handleUploadedFile, fileData } = useCP();
+
   const {
     control,
     handleSubmit,
@@ -308,15 +309,17 @@ const CreateCaseForm = ({ setFormEnabled, serviceProviders }) => {
               <Button
                 component="label"
                 role={undefined}
-                variant="contained"
+                variant="outlined"
                 tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
+                disabled={fileData?.loading}
               >
                 {fileData?.loading ? "Processing..." : "Upload file"}
                 <VisuallyHiddenInput
                   type="file"
                   onChange={(event) => handleUploadedFile(event)}
                   multiple
+                  disabled={fileData?.loading}
                 />
               </Button>
               {fileData?.name && fileData?.name}

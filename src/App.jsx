@@ -13,13 +13,13 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import { useEffect } from "react";
 import UserLogs from "./Components/UserLogs";
-import { generateLargeXLSX } from "./utils/functions.js";
+import BulkOperations from "./Components/BulkOperations.jsx";
+import GenerateCasesDataset from "./Components/GenerateCasesDataset.jsx";
 
 function App() {
   const { me } = useAuth();
   useEffect(() => {
     me();
-    // generateLargeXLSX();
   }, []);
 
   return (
@@ -81,6 +81,22 @@ function App() {
           element={
             <ProtectedRoute>
               <UserLogs />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bulk-operations"
+          element={
+            <ProtectedRoute>
+              <BulkOperations />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/generate-bulk-cases"
+          element={
+            <ProtectedRoute>
+              <GenerateCasesDataset />
             </ProtectedRoute>
           }
         />

@@ -12,7 +12,7 @@ const usePaginatedData = (endpoint, defaultLimit = 10) => {
   const [loading, setLoading] = useState(false);
   const { setCasesDetails } = useCP();
   const { setUsers } = usePermission();
-  const { setLogs } = useLog();
+  const { setLogs, setBulkOperations } = useLog();
   const loadingRef = useRef(false);
 
   const fetchData = async (currentPage = page, currentLimit = rowsPerPage) => {
@@ -26,8 +26,13 @@ const usePaginatedData = (endpoint, defaultLimit = 10) => {
       if (endpoint === "cases") setCasesDetails(res.data?.cases);
       if (endpoint === "user") setUsers(res.data?.users);
       if (endpoint === "logs") setLogs(res?.data?.logs);
+      if (endpoint === "logs/blukLogs") setBulkOperations(res?.data?.bulkLogs);
       setTotalCount(
-        res.data?.totalCases || res.data?.totalUsers || res.data?.totalLogs || 0
+        res.data?.totalCases ||
+          res.data?.totalUsers ||
+          res.data?.totalLogs ||
+          res.data?.totalBulkLogs ||
+          0
       );
     } catch (err) {
       toast.error(err?.response?.data?.message || "Error fetching data");

@@ -52,15 +52,20 @@ export const CasePaymentContextProvider = ({ children }) => {
 
   const handleUploadedFile = (e) => {
     if (fileData?.loading) return;
-    setFileData((prev) => ({
-      ...prev,
-      loading: true,
-    }));
     try {
       const file = e.target.files[0];
+      if (!file) {
+        toast.error("No file selected");
+        setFileData((prev) => ({ ...prev, loading: false }));
+        return;
+      }
       const reader = new FileReader();
 
       reader.onload = async (event) => {
+        setFileData((prev) => ({
+          ...prev,
+          loading: true,
+        }));
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: "array" });
 
@@ -98,6 +103,11 @@ export const CasePaymentContextProvider = ({ children }) => {
             toast.error(err.response.data.message, {
               style: { whiteSpace: "pre-line" },
             });
+          } finally {
+            setFileData((prev) => ({
+              ...prev,
+              loading: false,
+            }));
           }
         }
       };

@@ -133,3 +133,41 @@ export const logsColumns = [
     minWidth: 120,
   },
 ];
+
+export const bulkOperationsColumns = [
+  {
+    id: "userId",
+    label: "User ID",
+    minWidth: 130,
+  },
+  {
+    id: "name",
+    label: "Name",
+    minWidth: 100,
+  },
+  {
+    id: "accessType",
+    label: "Access Type",
+    minWidth: 100,
+  },
+  {
+    id: "duplicates",
+    label: "Duplicates",
+    minWidth: 100,
+  },
+  {
+    id: "validCases",
+    label: "Inserted Cases",
+    minWidth: 120,
+  },
+  {
+    id: "invalidCases",
+    label: "Invalid Cases",
+    minWidth: 120,
+  },
+  {
+    id: "created",
+    label: "Created At (UTC+0)",
+    minWidth: 180,
+  },
+];

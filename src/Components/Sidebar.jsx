@@ -9,6 +9,9 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SummarizeIcon from "@mui/icons-material/Summarize";
+import BatchPredictionIcon from "@mui/icons-material/BatchPrediction";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+
 const Sidebar = () => {
   const { authenticatedUser, logout } = useAuth();
   return (
@@ -83,6 +86,15 @@ const Sidebar = () => {
           >
             <SummarizeIcon color="gray" />
             <Typography variant="body1">Logs</Typography>
+          </NavLink>
+          <NavLink
+            to="/bulk-operations"
+            className={({ isActive }) =>
+              isActive ? "sideItem active" : "sideItem"
+            }
+          >
+            <PlaylistAddCheckIcon color="gray" />
+            <Typography variant="body1">Bulk Operations</Typography>
           </NavLink>
         </Stack>
         <Button

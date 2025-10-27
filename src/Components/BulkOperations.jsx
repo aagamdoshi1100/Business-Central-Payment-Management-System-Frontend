@@ -5,6 +5,7 @@ import { bulkOperationsColumns } from "../data";
 import Sidebar from "./Sidebar";
 import { Stack, Typography } from "@mui/material";
 import { useLog } from "../context/LogContext";
+import AccessDenied from "./AccessDenied";
 
 const BulkOperations = () => {
   const {
@@ -17,25 +18,31 @@ const BulkOperations = () => {
     refresh,
   } = usePaginatedData("logs/blukLogs");
 
-  const { bulkOperations } = useLog();
+  const { bulkOperations, isLogAccessAllowed } = useLog();
 
   return (
     <div className="container">
       <Sidebar />
       <Stack className="rightSidePage">
-        <Typography variant="h5" component="h5" mb={3}>
-          Bulk Operations
-        </Typography>
-        <DataTable
-          columns={bulkOperationsColumns}
-          rows={bulkOperations ?? []}
-          title="Logs"
-          totalCount={totalCount}
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-        />
+        {isLogAccessAllowed ? (
+          <>
+            <Typography variant="h5" component="h5" mb={3}>
+              Bulk Operations
+            </Typography>
+            <DataTable
+              columns={bulkOperationsColumns}
+              rows={bulkOperations ?? []}
+              title="Logs"
+              totalCount={totalCount}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </>
+        ) : (
+          <AccessDenied />
+        )}
       </Stack>
     </div>
   );

@@ -5,6 +5,7 @@ import { logsColumns } from "../data";
 import { useLog } from "../context/LogContext";
 import Sidebar from "./Sidebar";
 import { Stack, Typography } from "@mui/material";
+import AccessDenied from "./AccessDenied";
 
 const UserLogs = () => {
   const {
@@ -17,24 +18,30 @@ const UserLogs = () => {
     refresh,
   } = usePaginatedData("logs");
 
-  const { logs } = useLog();
+  const { logs, isLogAccessAllowed } = useLog();
   return (
     <div className="container">
       <Sidebar />
       <Stack className="rightSidePage">
-        <Typography variant="h5" component="h5" mb={3}>
-          User Logs
-        </Typography>
-        <DataTable
-          columns={logsColumns}
-          rows={logs ?? []}
-          title="Logs"
-          totalCount={totalCount}
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-        />
+        {isLogAccessAllowed ? (
+          <>
+            <Typography variant="h5" component="h5" mb={3}>
+              User Logs
+            </Typography>
+            <DataTable
+              columns={logsColumns}
+              rows={logs ?? []}
+              title="Logs"
+              totalCount={totalCount}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+            />
+          </>
+        ) : (
+          <AccessDenied />
+        )}
       </Stack>
     </div>
   );

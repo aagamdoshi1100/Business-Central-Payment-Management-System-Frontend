@@ -12,12 +12,12 @@ const usePaginatedData = (endpoint, defaultLimit = 10) => {
   const [loading, setLoading] = useState(false);
   const { setCasesDetails } = useCP();
   const { setUsers } = usePermission();
-  const { setLogs, setBulkOperations } = useLog();
+  const { setLogs, setBulkOperations, setLogAccessAllowed } = useLog();
   const loadingRef = useRef(false);
 
   const fetchData = async (currentPage = page, currentLimit = rowsPerPage) => {
     if (loadingRef.current) return;
-
+    setLogAccessAllowed(true);
     try {
       loadingRef.current = true;
       const res = await api.get(
@@ -36,6 +36,9 @@ const usePaginatedData = (endpoint, defaultLimit = 10) => {
       );
     } catch (err) {
       toast.error(err?.response?.data?.message || "Error fetching data");
+      if (err?.response.status === 403) {
+        setLogAccessAllowed(false);
+      }
     } finally {
       loadingRef.current = false;
       setLoading(false);

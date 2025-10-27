@@ -5,10 +5,18 @@ const LogContext = createContext();
 export const LogProvider = ({ children }) => {
   const [logs, setLogs] = useState([]);
   const [bulkOperations, setBulkOperations] = useState([]);
+  const [isLogAccessAllowed, setLogAccessAllowed] = useState(true);
 
   return (
     <LogContext.Provider
-      value={{ logs, setLogs, bulkOperations, setBulkOperations }}
+      value={{
+        logs,
+        setLogs,
+        bulkOperations,
+        setBulkOperations,
+        isLogAccessAllowed,
+        setLogAccessAllowed,
+      }}
     >
       {children}
     </LogContext.Provider>

@@ -1,11 +1,19 @@
-import { Button, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  InputAdornment,
+  TextField,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const { submitloginData, loading } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -62,7 +70,7 @@ const Login = () => {
             <TextField
               id="password"
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               variant="outlined"
               size="small"
               fullWidth
@@ -73,6 +81,19 @@ const Login = () => {
               })}
               error={!!errors.password}
               helperText={errors.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Button type="submit" variant="contained" fullWidth>
               {loading ? "Loading..." : "Submit"}

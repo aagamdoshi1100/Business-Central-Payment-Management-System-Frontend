@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+
 export const calculateGST = (amount, gstRate = 18) => {
   const gstAmount = (amount * gstRate) / 100;
   const totalAmount = amount + gstAmount;
@@ -105,3 +107,62 @@ export const convenienceCharge = (amount, chargePercentage = 2) => {
     totalAmount: parseFloat(totalAmount.toFixed(2)),
   };
 };
+
+export function generateLargeXLSX(rowCount = 50000) {
+  const providers = [
+    "68f9fd6f7fb5699d03125bc0",
+    "68f9fd9f7fb5699d03125bc2",
+    "68f9fde67fb5699d03125bc4",
+    "68fa00cb7fb5699d03125d81",
+    "68fa27d1f15b840f7906a7fb",
+  ];
+
+  const desc = [
+    "Payment done",
+    "Invoice payment",
+    "Service fee",
+    "Project completion",
+    "Monthly subscription",
+    "Consultation fee",
+    "Maintenance charge",
+    "Software license",
+    "Hardware purchase",
+    "Training session",
+  ];
+
+  const data = [
+    ["serviceProvider", "workReferenceId", "dueDate", "description", "amount"],
+  ];
+  const usedIds = new Set();
+
+  const start = new Date("2025-10-27").getTime();
+  const end = new Date("2026-12-31").getTime();
+
+  for (let i = 0; i < rowCount; i++) {
+    let id;
+    do {
+      id = `WORK-${Math.floor(Math.random() * 1_000_000) + 100_000}`;
+    } while (usedIds.has(id));
+    usedIds.add(id);
+
+    const provider =
+      Math.random() < 0.1
+        ? "68fa27d1f15b840f7906a7fb"
+        : providers[Math.floor(Math.random() * providers.length)];
+    const date = new Date(start + Math.random() * (end - start));
+    const formattedDate = `${String(date.getDate()).padStart(2, "0")}-${String(
+      date.getMonth() + 1
+    ).padStart(2, "0")}-${date.getFullYear()}`;
+    const description = desc[Math.floor(Math.random() * desc.length)];
+    const amount = Math.floor(Math.random() * 95000) + 5000;
+
+    data.push([provider, id, formattedDate, description, amount]);
+  }
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+  XLSX.writeFile(workbook, "data_50000.xlsx");
+  console.log("✅ Excel file generated: data_50000.xlsx");
+}

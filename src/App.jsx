@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Login from "./Components/Login";
 import SPForm from "./Components/SPForm";
@@ -13,11 +13,13 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
 import { useEffect } from "react";
 import UserLogs from "./Components/UserLogs";
+import { generateLargeXLSX } from "./utils/functions.js";
 
 function App() {
   const { me } = useAuth();
   useEffect(() => {
     me();
+    // generateLargeXLSX();
   }, []);
 
   return (

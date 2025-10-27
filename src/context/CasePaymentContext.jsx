@@ -67,6 +67,7 @@ export const CasePaymentContextProvider = ({ children }) => {
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         const json = XLSX.utils.sheet_to_json(sheet);
+        console.log(json, "json");
         if (
           (!json[0].serviceProvider,
           !json[0].workReferenceId,
@@ -91,6 +92,9 @@ export const CasePaymentContextProvider = ({ children }) => {
               style: { whiteSpace: "pre-line" },
             });
           } catch (err) {
+            if (err.response.status === 413) {
+              toast.error("Only 15MB sheet is alloweded");
+            }
             toast.error(err.response.data.message, {
               style: { whiteSpace: "pre-line" },
             });

@@ -65,6 +65,7 @@ export const CasePaymentContextProvider = ({ children }) => {
         setFileData((prev) => ({
           ...prev,
           loading: true,
+          name: file?.name,
         }));
         const data = new Uint8Array(event.target.result);
         const workbook = XLSX.read(data, { type: "array" });
@@ -118,6 +119,8 @@ export const CasePaymentContextProvider = ({ children }) => {
       setFileData((prev) => ({
         ...prev,
         loading: false,
+        name: "",
+        errMess: "",
       }));
     }
   };

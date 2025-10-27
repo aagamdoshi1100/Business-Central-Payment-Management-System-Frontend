@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { PieChart } from "@mui/x-charts/PieChart";
 import api from "../utils/axios";
 import AccessDenied from "./AccessDenied";
+import PaymentsOverview from "./PaymentsOverview";
 
 const Dashboard = () => {
   const loadingRef = useRef(null);
@@ -48,7 +49,7 @@ const Dashboard = () => {
     // Map API _id to display titles
     const titleMap = {
       Open: "Total Due",
-      Paid: "Total Paid",
+      Paid: "Total Gross Paid",
       "In progress": "In progress",
     };
 
@@ -117,6 +118,9 @@ const Dashboard = () => {
                   )}
                 </CardContent>
               </Card>
+            </Stack>
+            <Stack>
+              <PaymentsOverview />
             </Stack>
           </>
         ) : (
